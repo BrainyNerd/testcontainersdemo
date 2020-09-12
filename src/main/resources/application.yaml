@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://localhost:3321/testcontainerdemo"
+    username: root
+    password: root
+  flyway:
+    enabled: true
+    check-location: true
+    baseline-version: 0.0
+    locations: classpath:db/migration
+    out-of-order: true
+    baseline-on-migrate: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+server:
+  port: 8000
