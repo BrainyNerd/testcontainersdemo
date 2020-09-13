@@ -2,6 +2,7 @@ package com.example.testcontainersdemo.employee;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -20,16 +21,19 @@ public class EmployeeController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<Employee> getAllEmployees(){
         return employeeService.fetchAllEmployees();
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Employee getEmployeeWithId(@PathVariable("id") Integer id) throws Exception {
         return employeeService.fetchEmployeeWithId(id);
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Employee addEmployee(@RequestBody AddEmployeeRequest request){
         return employeeService.registerEmployee(mapRequest(request));
     }

@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:mysql:8.0.20:///testcontainerdemo
+  flyway:
+    enabled: true
+    check-location: true
+    baseline-version: 0.0
+    locations: classpath:db/migration
+    out-of-order: true
+    baseline-on-migrate: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+server:
+  port: 8000
+

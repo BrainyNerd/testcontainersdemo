@@ -20,6 +20,7 @@ public class EmployeeService {
     }
 
     public Employee fetchEmployeeWithId(Integer id) throws Exception {
+        System.out.println("id = " + id);
         return repository
                 .findById(id)
                 .orElseThrow(Exception::new);
