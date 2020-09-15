@@ -7,12 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Objects;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -29,8 +25,7 @@ public class EmployeeIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-
+    
     @Test
     @Transactional
     void shouldFetchAllEmployees() throws Exception {
@@ -38,11 +33,28 @@ public class EmployeeIntegrationTest {
         employeeRepository.save(new Employee(2, "Sam", "Child"));
         employeeRepository.save(new Employee(3, "James", "Bond"));
 
+        String expectedResponse = "[\n" +
+                "  {\n" +
+                "    \"id\": 1,\n" +
+                "    \"firstname\": \"John\",\n" +
+                "    \"lastname\": \"Smith\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"id\": 2,\n" +
+                "    \"firstname\": \"Sam\",\n" +
+                "    \"lastname\": \"Child\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"id\": 3,\n" +
+                "    \"firstname\": \"James\",\n" +
+                "    \"lastname\": \"Bond\"\n" +
+                "  }\n" +
+                "]\n";
+
         mockMvc.perform(get("/api/v1/employees")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(getData("response/fetchAllEmployees.json")));
-
+                .andExpect(content().json(expectedResponse));
     }
 
     @Test
@@ -52,35 +64,42 @@ public class EmployeeIntegrationTest {
         employeeRepository.save(new Employee(5, "Sam", "Child"));
         employeeRepository.save(new Employee(6, "James", "Bond"));
 
+        String expectedResponse = "{\n" +
+                "  \"id\": 5,\n" +
+                "  \"firstname\": \"Sam\",\n" +
+                "  \"lastname\": \"Child\"\n" +
+                "}\n";
+
         mockMvc.perform(get("/api/v1/employees/5")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(getData("response/fetchEmployeeWithId.json")));
-
+                .andExpect(content().json(expectedResponse));
     }
 
     @Test
     @Transactional
     void shouldAddNewEmployee() throws Exception {
+
+        String requestBody = "{\n" +
+                "  \"firstname\": \"Jack\",\n" +
+                "  \"lastname\": \"Sparrow\"\n" +
+                "}\n";
+
         MockHttpServletRequestBuilder request = post("/api/v1/employees")
-                .content(getData("requests/addEmployee.json"))
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8");
 
+        String expectedResponse = "{\n" +
+                "  \"id\": 7,\n" +
+                "  \"firstname\": \"Jack\",\n" +
+                "  \"lastname\": \"Sparrow\"\n" +
+                "}\n";
+
         mockMvc.perform(request)
                 .andExpect(status().isCreated())
-                .andExpect(content().json(getData("response/addEmployee.json")));
+                .andDo(print())
+                .andExpect(content().json(expectedResponse));
     }
-
-    //region Helper to read json file
-    private String getData(String file) {
-        try {
-            return IOUtils.toString(new InputStreamReader(Objects.requireNonNull(EmployeeIntegrationTest.class.getClassLoader().getResourceAsStream(file))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    //endregion
 }

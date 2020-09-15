@@ -1,7 +1,10 @@
 spring:
   datasource:
-    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:mysql:8.0.20:///testcontainerdemo
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+
   flyway:
     enabled: true
     check-location: true
@@ -14,4 +17,3 @@ spring:
       ddl-auto: validate
 server:
   port: 8000
-
