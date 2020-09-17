@@ -27,6 +27,7 @@ class EmployeeControllerTest {
         employeeController = new EmployeeController(employeeService);
     }
 
+    // region Fetch Employee
     @Test
     void shouldFetchAllEmployees() {
         Employee firstEmployee = mock(Employee.class);
@@ -54,7 +55,9 @@ class EmployeeControllerTest {
 
         assertThrows(Exception.class, () -> employeeController.getEmployeeWithId(1));
     }
+    //endregion
 
+    //region Add Employee
     @Test
     void shouldAddNewEmployee() {
         AddEmployeeRequest request = new AddEmployeeRequest();
@@ -68,4 +71,5 @@ class EmployeeControllerTest {
         Employee actualResponse = employeeController.addEmployee(request);
         assertEquals(expectedResponse, actualResponse);
     }
+    //endregion
 }

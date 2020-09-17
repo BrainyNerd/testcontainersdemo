@@ -31,6 +31,7 @@ public class EmployeeIntegrationTest {
     private MockMvc mockMvc;
 
 
+    //region Fetch Employee
     @Test
     @Transactional
     void shouldFetchAllEmployees() throws Exception {
@@ -58,7 +59,9 @@ public class EmployeeIntegrationTest {
                 .andExpect(content().json(getData("response/fetchEmployeeWithId.json")));
 
     }
+    //endregion
 
+    // region Add Employee
     @Test
     @Transactional
     void shouldAddNewEmployee() throws Exception {
@@ -72,6 +75,7 @@ public class EmployeeIntegrationTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().json(getData("response/addEmployee.json")));
     }
+    //endregion
 
     //region Helper to read json file
     private String getData(String file) {

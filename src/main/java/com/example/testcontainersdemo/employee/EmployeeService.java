@@ -15,6 +15,7 @@ public class EmployeeService {
         this.repository = repository;
     }
 
+    // region Fetch Employee
     public List<Employee> fetchAllEmployees() {
         return repository.findAll();
     }
@@ -25,8 +26,11 @@ public class EmployeeService {
                 .findById(id)
                 .orElseThrow(Exception::new);
     }
+    //endregion
 
+    // region Register Emplployee
     public Employee registerEmployee(Employee employee) {
         return repository.save(employee);
     }
+    //endregion
 }

@@ -20,6 +20,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    //region Fetch Employee
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Employee> getAllEmployees(){
@@ -32,11 +33,15 @@ public class EmployeeController {
         return employeeService.fetchEmployeeWithId(id);
     }
 
+    //endregion
+
+    //region Add Employee
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Employee addEmployee(@RequestBody AddEmployeeRequest request){
         return employeeService.registerEmployee(mapRequest(request));
     }
+    //endregion
 
     //region Mappers
     private Employee mapRequest(AddEmployeeRequest request){
