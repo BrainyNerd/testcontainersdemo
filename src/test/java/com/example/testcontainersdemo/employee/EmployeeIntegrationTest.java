@@ -16,7 +16,6 @@ import java.util.Objects;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,20 +41,6 @@ public class EmployeeIntegrationTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getData("response/fetchAllEmployees.json")));
-
-    }
-
-    @Test
-    @Transactional
-    void shouldFetchEmployeeWithProvidedId() throws Exception {
-        employeeRepository.save(new Employee(4, "John", "Smith"));
-        employeeRepository.save(new Employee(5, "Sam", "Child"));
-        employeeRepository.save(new Employee(6, "James", "Bond"));
-
-        mockMvc.perform(get("/api/v1/employees/5")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(getData("response/fetchEmployeeWithId.json")));
 
     }
 
