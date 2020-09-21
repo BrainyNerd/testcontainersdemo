@@ -10,7 +10,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import javax.transaction.Transactional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -26,56 +25,6 @@ public class EmployeeIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     
-    @Test
-    @Transactional
-    void shouldFetchAllEmployees() throws Exception {
-        employeeRepository.save(new Employee(1, "John", "Smith"));
-        employeeRepository.save(new Employee(2, "Sam", "Child"));
-        employeeRepository.save(new Employee(3, "James", "Bond"));
-
-        String expectedResponse = "[\n" +
-                "  {\n" +
-                "    \"id\": 1,\n" +
-                "    \"firstname\": \"John\",\n" +
-                "    \"lastname\": \"Smith\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"id\": 2,\n" +
-                "    \"firstname\": \"Sam\",\n" +
-                "    \"lastname\": \"Child\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"id\": 3,\n" +
-                "    \"firstname\": \"James\",\n" +
-                "    \"lastname\": \"Bond\"\n" +
-                "  }\n" +
-                "]\n";
-
-        mockMvc.perform(get("/api/v1/employees")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(expectedResponse));
-    }
-
-    @Test
-    @Transactional
-    void shouldFetchEmployeeWithProvidedId() throws Exception {
-        employeeRepository.save(new Employee(4, "John", "Smith"));
-        employeeRepository.save(new Employee(5, "Sam", "Child"));
-        employeeRepository.save(new Employee(6, "James", "Bond"));
-
-        String expectedResponse = "{\n" +
-                "  \"id\": 5,\n" +
-                "  \"firstname\": \"Sam\",\n" +
-                "  \"lastname\": \"Child\"\n" +
-                "}\n";
-
-        mockMvc.perform(get("/api/v1/employees/5")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(expectedResponse));
-    }
-
     @Test
     @Transactional
     void shouldAddNewEmployee() throws Exception {
